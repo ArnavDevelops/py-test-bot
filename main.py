@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 import datetime
 import os
 from os.path import join, dirname
@@ -12,32 +13,39 @@ Token = os.environ.get("Token")
 
 intents = discord.Intents.default().all()
 client = discord.Client(intents=intents)
-tree = discord.app_commands.CommandTree(client)
+tree = app_commands.CommandTree(client)
 
+#Activity
 @client.event
 async def on_ready():
+    activity = discord.Activity(
+        name="Amongus",
+        type=discord.ActivityType.watching
+    )
+    await client.change_presence(status=discord.Status.idle, activity=activity)
     print('Logged in!')
-    
-@tree.command(
+
+@app_commands.command(
         name="ping", 
         description="Play ping pong with me, Liberal",
-        guild=discord.Object(id=guildId)
 )
 async def ping(interaction: discord.Interaction):    
-    await interaction.response.send_message("pong 🏓")
+    await interaction.response.send_message(content="pong 🏓", ephemeral=True)
 
-@tree.command(
+@app_commands.command(
         name="embed", 
         description="Try out embed, Liberal",
-        guild=discord.Object(id=guildId)
 )
 async def embed(interaction: discord.Interaction): 
     embed = discord.Embed(
         title="Test",
         description="Test",
         color="RANDOM",
-        timestamp = datetime
+        timestamp=datetime.datetime
     )
     await interaction.response.send_message(embeds=[embed])
+
+
+tree.add_command(ping, guild=discord.Object(id=guildId))
 
 client.run(Token)

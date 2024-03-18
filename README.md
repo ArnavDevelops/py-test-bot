@@ -2,7 +2,7 @@
  Since I'm learning Python. This would be my first Discord bot I made with Python!
 
 # To Do List:
-- [ ] Make Event Handler, Command Handler
+- [ ] Put Commands in a folder
 - [ ] Make Basic Commands like embed, ping, etc.
 - [X] Use .env
 
