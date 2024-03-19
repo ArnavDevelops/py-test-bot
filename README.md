@@ -7,7 +7,7 @@
 - [X] Use .env
 
 # Note
-- Discord takes about 1 hour to register a Command made using Python.
+- Install the py-cord package not the discord(.py) package!
 
 # Relevant Links
 https://discord.com/

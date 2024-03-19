@@ -1,6 +1,6 @@
 import discord
-from discord import app_commands
 import datetime
+from discord.ext import commands
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -12,8 +12,7 @@ guildId = os.environ.get("guildId")
 Token = os.environ.get("Token")
 
 intents = discord.Intents.default().all()
-client = discord.Client(intents=intents)
-tree = app_commands.CommandTree(client)
+client = commands.Bot(intents=intents)
 
 #Activity
 @client.event
@@ -25,27 +24,31 @@ async def on_ready():
     await client.change_presence(status=discord.Status.idle, activity=activity)
     print('Logged in!')
 
-@app_commands.command(
+@client.slash_command(
         name="ping", 
         description="Play ping pong with me, Liberal",
 )
-async def ping(interaction: discord.Interaction):    
-    await interaction.response.send_message(content="pong 🏓", ephemeral=True)
+async def ping(ctx):    
+    await ctx.respond(content="pong 🏓", ephemeral=True)
 
-@app_commands.command(
+@client.slash_command(
         name="embed", 
         description="Try out embed, Liberal",
 )
-async def embed(interaction: discord.Interaction): 
+async def embed(ctx): 
     embed = discord.Embed(
+        author=discord.EmbedAuthor(name='Test', icon_url="https://cdn.discordapp.com/emojis/1180664825274183740.webp?size=128&quality=lossless"),
         title="Test",
         description="Test",
-        color="RANDOM",
-        timestamp=datetime.datetime
+        colour=255000,
+        timestamp=datetime.datetime.now(datetime.timezone.utc),
+        image="https://cdn.discordapp.com/emojis/1207023441858011186.webp?size=128&quality=lossless",
+        thumbnail="https://cdn.discordapp.com/emojis/1180665320562761829.webp?size=128&quality=lossless",
+        footer=discord.EmbedFooter(text='Test', icon_url="https://cdn.discordapp.com/emojis/1180664825274183740.webp?size=128&quality=lossless")
     )
-    await interaction.response.send_message(embeds=[embed])
+    embed.add_field(name='inclined field', value='inclined field', inline=True)
+    embed.add_field(name='field', value='field')
 
-
-tree.add_command(ping, guild=discord.Object(id=guildId))
+    await ctx.respond(embeds=[embed])
 
 client.run(Token)
