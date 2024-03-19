@@ -1,6 +1,7 @@
 import discord
 import datetime
 from discord.ext import commands
+from discord import Option
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -18,10 +19,10 @@ client = commands.Bot(intents=intents)
 @client.event
 async def on_ready():
     activity = discord.Activity(
-        name="Amongus",
+        name="You",
         type=discord.ActivityType.watching
     )
-    await client.change_presence(status=discord.Status.idle, activity=activity)
+    await client.change_presence(status=discord.Status.online, activity=activity)
     print('Logged in!')
 
 @client.slash_command(
@@ -29,7 +30,7 @@ async def on_ready():
         description="Play ping pong with me, Liberal",
 )
 async def ping(ctx):    
-    await ctx.respond(content="pong 🏓", ephemeral=True)
+    await ctx.respond(content=f"pong 🏓 | Bot's Latency: {client.latency}", ephemeral=True)
 
 @client.slash_command(
         name="embed", 
@@ -50,5 +51,16 @@ async def embed(ctx):
     embed.add_field(name='field', value='field')
 
     await ctx.respond(embeds=[embed])
+
+@client.command(
+    name="say",
+    description="What do u want me to say?",
+)
+async def say(
+    ctx: discord.ApplicationContext,
+    text: Option(input_type=str, name="Text", description="Enter the text") # type: ignore
+    ):
+    await ctx.respond(content="Sent!", ephemeral=True)
+    await ctx.send(f"{text}")
 
 client.run(Token)
