@@ -33,6 +33,17 @@ async def ping(ctx):
     await ctx.respond(content=f"pong 🏓 | Bot's Latency: {client.latency}", ephemeral=True)
 
 @client.slash_command(
+    name="say",
+    description="What do u want me to say, Liberal",
+)
+async def say(
+    ctx: discord.ApplicationContext,
+    text: Option(str, "Enter the text")
+    ):
+    await ctx.respond(content="Sent!", ephemeral=True)
+    await ctx.channel.send(f"{text}")
+
+@client.slash_command(
         name="embed", 
         description="Try out embed, Liberal",
 )
@@ -51,16 +62,5 @@ async def embed(ctx):
     embed.add_field(name='field', value='field')
 
     await ctx.respond(embeds=[embed])
-
-@client.command(
-    name="say",
-    description="What do u want me to say?",
-)
-async def say(
-    ctx: discord.ApplicationContext,
-    text: Option(input_type=str, name="Text", description="Enter the text") # type: ignore
-    ):
-    await ctx.respond(content="Sent!", ephemeral=True)
-    await ctx.send(f"{text}")
 
 client.run(Token)
